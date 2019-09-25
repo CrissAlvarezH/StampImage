@@ -7,11 +7,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.cristian.dev.stampimage.utils.ActivityUtils
+import com.cristian.dev.stampimage.utils.ImageUtils
 import com.dev.cristian.alvarez.pensiones.utils.CamaraUtils
 import com.dev.cristian.alvarez.pensiones.utils.GaleriaUtils
+import kotlinx.android.synthetic.main.activity_main.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 private const val COD_PERMISOS = 423
 private const val COD_CAMARA = 626
@@ -37,6 +42,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clickTomarImagen(view: View) {
+
+        if ( edtEstampe?.text.toString().trim().isEmpty() ) {
+            edtEstampe?.error = "Digite el texto a estampar"
+            edtEstampe?.requestFocus()
+            return;
+        }
 
         if ( ActivityUtils.validarPermisosFaltantes(this, COD_PERMISOS, true) ) {
             pedirImg()
@@ -94,7 +105,29 @@ class MainActivity : AppCompatActivity() {
                         .load(rutaImg)
                         .into(it)
                 }
+
+                estamparImagen(rutaImg)
             }
+        }
+    }
+
+    private fun estamparImagen(rutaImg: String) {
+        val rutaEstampada = ImageUtils.stampImage(
+            edtEstampe?.text.toString(),
+            rutaImg,
+            SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault()).format(Date())
+        )
+
+        if ( rutaEstampada != null ) {
+
+            // TODO revisar porque la imagen sale volteada 90 grados
+            img?.let {
+                Glide.with(this)
+                    .load(rutaEstampada)
+                    .into(it)
+            }
+        } else {
+            Toast.makeText(this, "Estampe fallido", Toast.LENGTH_SHORT).show()
         }
     }
 }
