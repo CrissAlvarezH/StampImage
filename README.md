@@ -1,6 +1,6 @@
 # Descripción
 La app pide el texto a estampar en la imagen, la imagen se puede tomar de la galería o de la camara, el texto se estampa en 
-la esquina superior izquierda con un colo blanco y bordes negros.
+la esquina superior izquierda con un color blanco y bordes negros.
 
 # Demo
 
