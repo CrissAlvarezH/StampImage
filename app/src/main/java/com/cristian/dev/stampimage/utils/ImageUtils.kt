@@ -63,13 +63,13 @@ class ImageUtils {
             try {
                 // Guardamos la imagen resultante
                 val rutaCarpeta = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath +
-                                                "/StampImage";
+                                    File.separator + "StampImage" + File.separator;
 
                 // Creamos la carpeta si no existe
                 val carpetaDestino = File(rutaCarpeta)
                 if ( !carpetaDestino.exists() ) carpetaDestino.mkdirs()
 
-                rutaDestino = carpetaDestino.absolutePath + nombreImgDestino + ".jpg"
+                rutaDestino = carpetaDestino.absolutePath + File.separator + nombreImgDestino + ".jpg"
 
                 bitmapDestino.compress(
                     Bitmap.CompressFormat.JPEG,
