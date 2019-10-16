@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
@@ -14,7 +13,6 @@ import com.cristian.dev.stampimage.utils.ActivityUtils
 import com.cristian.dev.stampimage.utils.ImageUtils
 import com.dev.cristian.alvarez.pensiones.utils.CamaraUtils
 import com.dev.cristian.alvarez.pensiones.utils.GaleriaUtils
-import kotlinx.android.synthetic.main.activity_main.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,7 +22,8 @@ private const val COD_GALERIA = 190
 
 class MainActivity : AppCompatActivity() {
 
-    var img: ImageView? = null
+    var imgOriginal: ImageView? = null
+    var imgEstampada: ImageView? = null
     var edtEstampe: EditText? = null
     var camaraUtils: CamaraUtils? = null
     var galeriaUtils: GaleriaUtils? = null
@@ -35,7 +34,8 @@ class MainActivity : AppCompatActivity() {
         camaraUtils = CamaraUtils(this)
         galeriaUtils = GaleriaUtils(this)
 
-        img = findViewById(R.id.img);
+        imgOriginal = findViewById(R.id.img_original);
+        imgEstampada = findViewById(R.id.img_estampada)
         edtEstampe = findViewById(R.id.edt_estampe);
 
 
@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
 
             rutaImg?.let {
 
-                img?.let {
+                imgOriginal?.let {
                     Glide.with(this)
                         .load(rutaImg)
                         .into(it)
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         if ( rutaEstampada != null ) {
 
             // TODO revisar porque la imagen sale volteada 90 grados
-            img?.let {
+            imgEstampada?.let {
                 Glide.with(this)
                     .load(rutaEstampada)
                     .into(it)
