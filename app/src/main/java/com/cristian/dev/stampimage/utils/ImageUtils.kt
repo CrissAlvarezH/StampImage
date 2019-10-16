@@ -15,14 +15,18 @@ class ImageUtils {
 
     companion object {
 
-        fun stampImage(textStamp: String, rutaImg: String, nombreImgDestino: String): String? {
-
+        fun stampImageFromPath(textStamp: String, rutaImg: String, nombreImgDestino: String): String? {
             Log.v(TAG, "Orientación: ${ getOrientacion(rutaImg) }")
 
             // Creamos un bitmap de la imagen con la ruta pasada por parametros
             val options = BitmapFactory.Options()
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
             val bitmap = BitmapFactory.decodeFile(rutaImg, options)
+
+            return stampImageFromBitmap(textStamp, bitmap, nombreImgDestino);
+        }
+
+        fun stampImageFromBitmap(textStamp: String, bitmap: Bitmap, nombreImgDestino: String): String? {
 
             Log.v(TAG, "Original. Width: ${ bitmap.width }, Height: ${ bitmap.height }")
 
@@ -63,7 +67,7 @@ class ImageUtils {
             try {
                 // Guardamos la imagen resultante
                 val rutaCarpeta = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath +
-                                    File.separator + "StampImage" + File.separator;
+                        File.separator + "StampImage" + File.separator;
 
                 // Creamos la carpeta si no existe
                 val carpetaDestino = File(rutaCarpeta)

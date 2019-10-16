@@ -1,6 +1,8 @@
 package com.cristian.dev.stampimage
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -9,6 +11,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.cristian.dev.stampimage.utils.ActivityUtils
 import com.cristian.dev.stampimage.utils.ImageUtils
 import com.dev.cristian.alvarez.pensiones.utils.CamaraUtils
@@ -112,7 +116,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun estamparImagen(rutaImg: String) {
-        val rutaEstampada = ImageUtils.stampImage(
+        /**
+         * Utilizamos Glide para obtener el bitmap porque cuando se hace por BitmapFactory.decodeFile
+         * la imagen sale rotada 90 grados, este es el problema con la funcion stampImageFromPath que
+         * está en la clase ImageUtils comentada aquí debajo. La desventaja de esto es que el
+         * tratamiento que le da Glide a la imagen tarda unos segundos mientras que el otro es casi
+         * instantaneo.
+         */
+        Glide.with(this)
+            .asBitmap()
+            .load(rutaImg)
+            .into(object: CustomTarget<Bitmap>() {
+                override fun onLoadCleared(placeholder: Drawable?) {
+
+                }
+
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+
+                    val rutaEstampada = ImageUtils.stampImageFromBitmap(
+                        edtEstampe?.text.toString(),
+                        resource,
+                        SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault()).format(Date())
+                    )
+
+                    if ( rutaEstampada != null ) {
+
+                        imgEstampada?.let {
+                            Glide.with(applicationContext)
+                                .load(rutaEstampada)
+                                .into(it)
+                        }
+                    } else {
+                        Toast.makeText(applicationContext, "Estampe fallido", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            });
+
+        /* // TODO revisar porque la imagen sale volteada 90 grados
+        val rutaEstampada = ImageUtils.stampImageFromPath(
             edtEstampe?.text.toString(),
             rutaImg,
             SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault()).format(Date())
@@ -120,7 +162,7 @@ class MainActivity : AppCompatActivity() {
 
         if ( rutaEstampada != null ) {
 
-            // TODO revisar porque la imagen sale volteada 90 grados
+
             imgEstampada?.let {
                 Glide.with(this)
                     .load(rutaEstampada)
@@ -129,5 +171,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Estampe fallido", Toast.LENGTH_SHORT).show()
         }
+
+         */
     }
 }
