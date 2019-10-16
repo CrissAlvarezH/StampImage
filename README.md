@@ -4,4 +4,4 @@ la esquina superior izquierda con un color blanco y bordes negros.
 
 # Demo
 
-<img alt="Demo StampImage App" width="300px" src="https://github.com/CrissAlvarezH/ImagenesRepos/blob/master/imgs/StampImage/demo_stampimage_app_android.gif" />
+<img alt="Demo StampImage App" width="300px" src="https://github.com/CrissAlvarezH/ImagenesRepos/blob/master/imgs/StampImage/demo_stamp_image_v2.gif" />
